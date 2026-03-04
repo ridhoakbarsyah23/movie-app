@@ -1,5 +1,7 @@
 <?php
 
+use Illuminate\Support\Facades\Route;
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -24,3 +26,5 @@ Route::group(['middleware' => 'auth.custom'], function () {
 
     Route::get('/logout', 'AuthController@logout')->name('logout');
 });
+
+Route::get('/locale/{lang}', 'LanguageController@setLocale')->name('setLocale');
