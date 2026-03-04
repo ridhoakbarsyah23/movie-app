@@ -1,6 +1,8 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+    use Illuminate\Support\Facades\Auth;
+
 
 /*
 |--------------------------------------------------------------------------
@@ -23,8 +25,17 @@ Route::group(['middleware' => 'auth.custom'], function () {
     Route::post('/favorites', 'FavoriteController@store')->name('favorites.store');
     Route::get('/favorites', 'FavoriteController@index')->name('favorites.index');
     Route::delete('/favorites/{id}', 'FavoriteController@destroy')->name('favorites.destroy');
+Route::post('/logout', function () {
+    Auth::logout();
+    return redirect('/');
+})->name('logout');
 
-    Route::get('/logout', 'AuthController@logout')->name('logout');
 });
 
-Route::get('/locale/{lang}', 'LanguageController@setLocale')->name('setLocale');
+Route::get('/lang/{locale}', function ($locale) {
+    if (!in_array($locale, ['en', 'id'])) {
+        abort(400);
+    }
+    session(['locale' => $locale]);
+    return back();
+});

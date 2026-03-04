@@ -1,81 +1,38 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Favorite Movies</title>
+    <title>Favorite Movie</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
     <!-- Bootstrap 4 -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
 
-    <!-- SweetAlert2 -->
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-
-    <!-- Google Fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
-
     <style>
         body {
-            background: linear-gradient(135deg, #87CEFA, #E0F7FA);
-            font-family: 'Roboto', sans-serif;
-            min-height: 100vh;
+            background-color: #f4f6f9;
         }
 
-        /* Navbar */
         .navbar-custom {
-            background: linear-gradient(90deg, #1E90FF, #87CEFA);
-        }
-        .navbar-brand {
-            font-weight: 600;
-        }
-        .navbar .btn {
-            font-size: 0.9rem;
-            padding: 6px 12px;
+            background: linear-gradient(90deg, #667eea, #764ba2);
         }
 
-        /* Favorite card */
         .favorite-card {
-            border-radius: 20px;
-            overflow: hidden;
-            transition: transform 0.3s, box-shadow 0.3s;
-            background-color: #fff;
+            border-radius: 15px;
+            transition: 0.3s;
         }
+
         .favorite-card:hover {
             transform: translateY(-5px);
-            box-shadow: 0 15px 35px rgba(0,0,0,0.2);
-        }
-        .favorite-card img {
-            height: 350px;
-            object-fit: cover;
-            transition: transform 0.3s;
-        }
-        .favorite-card img:hover {
-            transform: scale(1.05);
-        }
-        .card-body h6 {
-            color: #1E3A8A;
-            font-weight: 600;
-        }
-        .card-body p {
-            color: #555;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.15);
         }
 
-        /* Delete button */
         .btn-delete {
-            background-color: #FF6B6B;
+            background-color: #dc3545;
             color: white;
-            border-radius: 12px;
-            font-weight: 500;
-            transition: background-color 0.3s, transform 0.2s;
-        }
-        .btn-delete:hover {
-            background-color: #FF4C4C;
-            transform: translateY(-2px);
         }
 
-        @media (max-width: 768px) {
-            .favorite-card img {
-                height: 250px;
-            }
+        .btn-delete:hover {
+            background-color: #c82333;
         }
     </style>
 </head>
@@ -95,21 +52,25 @@
 
     <div class="row">
         @forelse($favorites as $fav)
-            <div class="col-md-3 col-sm-6 mb-4">
+            <div class="col-md-3 mb-4">
                 <div class="card favorite-card h-100">
 
                     <img src="{{ $fav->poster != 'N/A' ? $fav->poster : 'https://via.placeholder.com/300x445' }}"
-                         class="card-img-top">
+                         class="card-img-top"
+                         style="height:350px; object-fit:cover;">
 
                     <div class="card-body d-flex flex-column">
-                        <h6 class="card-title">{{ $fav->title }}</h6>
+                        <h6 class="card-title">
+                            {{ $fav->title }}
+                        </h6>
+
                         <p class="text-muted">{{ $fav->year }}</p>
 
-                        <form method="POST" action="/favorites/{{ $fav->id }}" class="mt-auto delete-form">
+                        <form method="POST" action="/favorites/{{ $fav->id }}" class="mt-auto">
                             {{ csrf_field() }}
                             {{ method_field('DELETE') }}
 
-                            <button type="button" class="btn btn-delete btn-sm btn-block" onclick="confirmDelete(this)">
+                            <button type="submit" class="btn btn-delete btn-sm btn-block">
                                 🗑 Delete
                             </button>
                         </form>
@@ -127,25 +88,6 @@
     </div>
 
 </div>
-
-<script>
-    function confirmDelete(button) {
-        Swal.fire({
-            title: 'Yakin ingin menghapus?',
-            text: "Movie ini akan dihapus dari favorit!",
-            icon: 'warning',
-            showCancelButton: true,
-            confirmButtonColor: '#d33',
-            cancelButtonColor: '#3085d6',
-            confirmButtonText: 'Ya, hapus!',
-            cancelButtonText: 'Batal'
-        }).then((result) => {
-            if (result.isConfirmed) {
-                button.closest('form').submit();
-            }
-        })
-    }
-</script>
 
 </body>
 </html>
